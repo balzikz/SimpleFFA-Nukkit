@@ -1,0 +1,13 @@
+name: SimpleFFA
+main: com.yourname.ffa.FFAPlugin
+version: "FERRARI"
+api: ["1.0.5"]
+author: Balzikz
+description: "FFA, которое, сука, работает"
+load: POSTWORLD
+depend: [MultiWorldPlugin]
+
+commands:
+  ffa:
+    description: "Войти на FFA арену или посмотреть список"
+    permission: ffa.command.use

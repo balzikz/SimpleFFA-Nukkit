@@ -1,0 +1,65 @@
+# Мир, в который игроков будет телепортировать после выхода с арены
+main-hub-world: "world"
+
+# --- НАСТРОЙКА АРЕН ---
+arenas:
+  # Уникальный ID арены. ТОЛЬКО ТЕКСТ! НЕ ЦИФРЫ!
+  build_uhc:
+    name: "§cBuild UHC"
+    world: "ffa_build"
+    spawn: "128,70,128,90,0" # <-- НЕ ЗАБУДЬ ПОМЕНЯТЬ НА СВОИ КООРДИНАТЫ
+    rules:
+      place-blocks: true
+      break-blocks: false
+      placed-blocks-decay-seconds: 5
+      drop-items: true
+      pickup-items: false
+    kit:
+      - "276:0:1:{ench:[{id:16,lvl:1}]}"
+      - "261:0:1"
+      - "346:0:1"
+      - "262:0:64"
+      - "322:0:8"
+      - "5:0:64"
+      - "5:0:64"
+      - "helmet:310:0:1"
+      - "chestplate:311:0:1"
+      - "leggings:312:0:1"
+      - "boots:313:0:1"
+
+  pot_pvp:
+    name: "§bPot PvP"
+    world: "ffa_pot"
+    spawn: "0,100,0,0,0" # <-- НЕ ЗАБУДЬ ПОМЕНЯТЬ
+    rules:
+      place-blocks: false
+      break-blocks: false
+      placed-blocks-decay-seconds: -1
+      drop-items: false
+      pickup-items: false
+    kit:
+      - "276:0:1:{ench:[{id:16,lvl:1}]}"
+      - "helmet:306:0:1"
+      - "chestplate:307:0:1"
+      - "leggings:308:0:1"
+      - "boots:309:0:1"
+      - "373:22:8" #
+
+  axe_pvp:
+    name: "§6Axe PvP"
+    world: "ffa_axe"
+    spawn: "-50,70,100,180,5"
+    rules:
+      place-blocks: false
+      break-blocks: false
+      placed-blocks-decay-seconds: -1
+      drop-items: false
+      pickup-items: false
+    kit:
+      - "279:0:1:{ench:[{id:16,lvl:5}]}"
+      - "468:0:1"
+      - "322:0:16"
+      - "helmet:314:0:1"
+      - "chestplate:315:0:1"
+      - "leggings:316:0:1"
+      - "boots:317:0:1"

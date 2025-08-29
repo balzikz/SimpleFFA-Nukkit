@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- НАШИ ДАННЫЕ -->
+    <groupId>com.yourname</groupId>
+    <artifactId>SimpleFFA</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <!-- ЕГО ВЕРСИЯ JAVA -->
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <!-- ЕГО РАБОЧИЙ РЕПОЗИТОРИЙ -->
+        <repository>
+            <id>repo-lanink-cn</id>
+            <url>https://repo.lanink.cn/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- ЕГО ЗАВИСИМОСТЬ ЯДРА -->
+        <dependency>
+            <groupId>cn.nukkit</groupId>
+            <artifactId>Nukkit</artifactId>
+            <version>MOT-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- НАШ БЛОК СБОРКИ, ЧТОБЫ НЕ ПРОЕБАТЬ plugin.yml -->
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <finalName>SimpleFFA</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>
