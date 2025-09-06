@@ -30,7 +30,7 @@ arenas:
   pot_pvp:
     name: "§bPot PvP"
     world: "ffa_pot"
-    spawn: "0,100,0,0,0" # <-- НЕ ЗАБУДЬ ПОМЕНЯТЬ
+    spawn: "0,100,0,0,0"
     rules:
       place-blocks: false
       break-blocks: false
