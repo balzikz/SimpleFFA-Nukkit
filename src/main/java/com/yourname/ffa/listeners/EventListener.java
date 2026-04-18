@@ -23,8 +23,7 @@ public class EventListener implements Listener {
     public EventListener(FFAPlugin plugin) {
         this.plugin = plugin;
     }
-
-    // 🔥 ОБРАБОТКА UI
+    
     @EventHandler
     public void onForm(PlayerFormRespondedEvent event) {
 
@@ -40,7 +39,6 @@ public class EventListener implements Listener {
 
         var arenas = new ArrayList<>(plugin.getArenaManager().getAllArenas());
 
-        // последняя кнопка = закрыть
         if (id == arenas.size()) return;
 
         Arena arena = arenas.get(id);
