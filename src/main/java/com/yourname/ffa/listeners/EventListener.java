@@ -9,15 +9,44 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.inventory.InventoryPickupItemEvent;
 import cn.nukkit.event.player.*;
+import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.level.Location;
-import cn.nukkit.scheduler.Task;
 import com.yourname.ffa.FFAPlugin;
 import com.yourname.ffa.arena.Arena;
+
+import java.util.ArrayList;
 
 public class EventListener implements Listener {
 
     private final FFAPlugin plugin;
-    public EventListener(FFAPlugin plugin) { this.plugin = plugin; }
+
+    public EventListener(FFAPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    // 🔥 ОБРАБОТКА UI
+    @EventHandler
+    public void onForm(PlayerFormRespondedEvent event) {
+
+        if (event.getFormID() != 777) return;
+
+        if (!(event.getResponse() instanceof FormResponseSimple response)) return;
+
+        Player player = event.getPlayer();
+
+        int id = response.getClickedButtonId();
+
+        if (id == -1) return;
+
+        var arenas = new ArrayList<>(plugin.getArenaManager().getAllArenas());
+
+        // последняя кнопка = закрыть
+        if (id == arenas.size()) return;
+
+        Arena arena = arenas.get(id);
+
+        plugin.getArenaManager().joinArena(player, arena.id);
+    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -51,13 +80,17 @@ public class EventListener implements Listener {
         Player player = event.getPlayer();
         Arena arena = plugin.getPlayerArena(player);
         if (arena != null) {
-            if (!arena.canPlaceBlocks) { event.setCancelled(true); return; }
+            if (!arena.canPlaceBlocks) {
+                event.setCancelled(true);
+                return;
+            }
             if (arena.placedBlocksDecaySeconds > 0) {
                 Block block = event.getBlock();
                 Location blockLoc = block.getLocation();
                 plugin.getPlayerPlacedBlocks().add(blockLoc);
                 plugin.getServer().getScheduler().scheduleDelayedTask(plugin, () -> {
-                    if (plugin.getPlayerPlacedBlocks().remove(blockLoc) && block.getLevel().getBlock(blockLoc).getId() == block.getId()) {
+                    if (plugin.getPlayerPlacedBlocks().remove(blockLoc)
+                            && block.getLevel().getBlock(blockLoc).getId() == block.getId()) {
                         block.getLevel().setBlock(blockLoc, Block.get(Block.AIR));
                     }
                 }, arena.placedBlocksDecaySeconds * 20);
