@@ -13,6 +13,7 @@ import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
+import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.level.Location;
 import com.yourname.ffa.FFAPlugin;
@@ -88,7 +89,31 @@ public class EventListener implements Listener {
         }
 
         event.setCancelled(true);
-        player.sendMessage("§cНа FFA арене это команда недопустна");
+        player.sendMessage("§cНа FFA арене доступны только команды: §e/hub§c, §e/ffa leave");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        Arena arena = plugin.getPlayerArena(player);
+
+        if (arena == null) {
+            return;
+        }
+
+        if (event.getTo() == null || event.getTo().getLevel() == null) {
+            return;
+        }
+
+        String toWorld = event.getTo().getLevel().getName();
+
+        if (!arena.worldName.equalsIgnoreCase(toWorld)) {
+            plugin.getArenaManager().leaveArena(player, false);
+        }
     }
 
     @EventHandler
