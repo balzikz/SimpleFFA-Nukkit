@@ -44,7 +44,11 @@ public class FFACommand implements cn.nukkit.command.CommandExecutor {
             FormWindowSimple form = new FormWindowSimple("§l§cFFA", "§7Выберите арену:");
 
             for (Arena arena : arenas) {
-                form.addButton(new ElementButton(arena.name));
+                int players = plugin.getPlayersInArena(arena);
+
+                String text = arena.name + "\n§7Играют: §e" + players;
+
+                form.addButton(new ElementButton(text));
             }
 
             form.addButton(new ElementButton("§cЗакрыть"));
