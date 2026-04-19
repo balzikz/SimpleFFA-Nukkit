@@ -10,6 +10,8 @@ import com.yourname.ffa.arena.Arena;
 
 public class FFACommand implements cn.nukkit.command.CommandExecutor {
 
+    private static final int FFA_MENU_FORM_ID = 777;
+
     private final FFAPlugin plugin;
 
     public FFACommand(FFAPlugin plugin) {
@@ -18,7 +20,6 @@ public class FFACommand implements cn.nukkit.command.CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!command.getName().equalsIgnoreCase("ffa")) {
             return false;
         }
@@ -31,42 +32,47 @@ public class FFACommand implements cn.nukkit.command.CommandExecutor {
         Player player = (Player) sender;
 
         plugin.getArenaManager().loadArenas();
-        
-        if (args.length == 0) {
 
+        if (args.length == 0) {
             var arenas = plugin.getArenaManager().getAllArenas();
 
             if (arenas.isEmpty()) {
-                player.sendMessage("§cНет доступных арен.");
+                player.sendMessage("§cНа сервере нет доступных арен.");
                 return true;
             }
 
-            FormWindowSimple form = new FormWindowSimple("§l§cFFA", "§7Выберите арену:");
+            FormWindowSimple form = new FormWindowSimple("§l§6FFA", "§7Выберите арену:");
 
             for (Arena arena : arenas) {
                 int players = plugin.getPlayersInArena(arena);
-
-                String text = arena.name + "\n§7Играют: §e" + players;
-
-                form.addButton(new ElementButton(text));
+                String buttonText = arena.name + "\n§8Играют: §e" + players;
+                form.addButton(new ElementButton(buttonText));
             }
 
             form.addButton(new ElementButton("§cЗакрыть"));
-
-            player.showFormWindow(form, 777);
-
+            player.showFormWindow(form, FFA_MENU_FORM_ID);
             return true;
         }
 
-        String arenaId = args[0].toLowerCase();
+        String sub = args[0].toLowerCase();
 
-        if (plugin.getArenaManager().getArenaById(arenaId) == null) {
-            player.sendMessage("§cАрена не найдена!");
+        if (sub.equals("leave")) {
+            if (!plugin.isPlayerInArena(player)) {
+                player.sendMessage("§cВы не находитесь на FFA арене.");
+                return true;
+            }
+
+            plugin.getArenaManager().leaveArena(player, true);
+            player.sendMessage("§aВы вышли с FFA арены.");
             return true;
         }
 
-        plugin.getArenaManager().joinArena(player, arenaId);
+        if (plugin.getArenaManager().getArenaById(sub) == null) {
+            player.sendMessage("§cАрена с ID '" + sub + "' не найдена!");
+            return true;
+        }
 
+        plugin.getArenaManager().joinArena(player, sub);
         return true;
     }
 }
