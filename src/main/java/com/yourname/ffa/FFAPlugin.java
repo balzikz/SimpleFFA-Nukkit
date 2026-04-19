@@ -1,8 +1,6 @@
 package com.yourname.ffa;
 
 import cn.nukkit.Player;
-import cn.nukkit.command.Command;
-import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import com.yourname.ffa.arena.Arena;
@@ -10,7 +8,11 @@ import com.yourname.ffa.arena.ArenaManager;
 import com.yourname.ffa.commands.FFACommand;
 import com.yourname.ffa.listeners.EventListener;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.HashSet;
 
 public class FFAPlugin extends PluginBase {
 
@@ -28,27 +30,49 @@ public class FFAPlugin extends PluginBase {
 
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
-        ((cn.nukkit.command.PluginCommand) 
-        this.getServer().getPluginCommand("ffa")).setExecutor(new FFACommand(this));
-        
-        getLogger().info("§aSimpleFFA (Феррари) запущен! Арены будут загружены по запросу.");
+        ((cn.nukkit.command.PluginCommand)
+                this.getServer().getPluginCommand("ffa")).setExecutor(new FFACommand(this));
+
+        getLogger().info("§aSimpleFFA (ФЕРРАРИ) запущен! Арены будут загружены по запросу.");
     }
 
-    public static FFAPlugin getInstance() { return instance; }
-    public ArenaManager getArenaManager() { return arenaManager; }
-    public void setPlayerArena(Player p, Arena a) { if(a==null) playerArenas.remove(p.getUniqueId()); else playerArenas.put(p.getUniqueId(), a); }
-    public Arena getPlayerArena(Player p) { return playerArenas.get(p.getUniqueId()); }
-    public boolean isPlayerInArena(Player p) { return playerArenas.containsKey(p.getUniqueId()); }
-    public Set<Location> getPlayerPlacedBlocks() { return playerPlacedBlocks; }
-    public int getPlayersInArena(Arena arena) {
-    int count = 0;
+    public static FFAPlugin getInstance() {
+        return instance;
+    }
 
-    for (Arena a : playerArenas.values()) {
-        if (a == arena) {
-            count++;
+    public ArenaManager getArenaManager() {
+        return arenaManager;
+    }
+
+    public void setPlayerArena(Player p, Arena a) {
+        if (a == null) {
+            playerArenas.remove(p.getUniqueId());
+        } else {
+            playerArenas.put(p.getUniqueId(), a);
         }
     }
 
-    return count;
+    public Arena getPlayerArena(Player p) {
+        return playerArenas.get(p.getUniqueId());
+    }
+
+    public boolean isPlayerInArena(Player p) {
+        return playerArenas.containsKey(p.getUniqueId());
+    }
+
+    public Set<Location> getPlayerPlacedBlocks() {
+        return playerPlacedBlocks;
+    }
+
+    public int getPlayersInArena(Arena arena) {
+        int count = 0;
+
+        for (Arena current : playerArenas.values()) {
+            if (current == arena) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }
