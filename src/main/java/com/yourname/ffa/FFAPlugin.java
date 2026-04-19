@@ -40,4 +40,15 @@ public class FFAPlugin extends PluginBase {
     public Arena getPlayerArena(Player p) { return playerArenas.get(p.getUniqueId()); }
     public boolean isPlayerInArena(Player p) { return playerArenas.containsKey(p.getUniqueId()); }
     public Set<Location> getPlayerPlacedBlocks() { return playerPlacedBlocks; }
+    public int getPlayersInArena(Arena arena) {
+    int count = 0;
+
+    for (Arena a : playerArenas.values()) {
+        if (a == arena) {
+            count++;
+        }
+    }
+
+    return count;
+    }
 }
